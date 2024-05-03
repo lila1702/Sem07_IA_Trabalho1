@@ -1,0 +1,17 @@
+# COLORS (R, G B)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+DARKGREY = (40, 40, 40)
+LIGHTGRAY = (100, 100, 100)
+
+BGCOLOR = DARKGREY
+
+# GAME SETTINGS
+WIDTH = 1200
+HEIGHT = 700
+FPS = 30
+title = "N-Puzzle"
+TILESIZE = 64
+
+# O "N" do "N-Puzzle"
+GAMESIZE = 4
