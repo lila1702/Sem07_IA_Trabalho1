@@ -1,0 +1,1 @@
+# Sem07_IA_Trabalho1
