@@ -11,7 +11,7 @@ WIDTH = 1200
 HEIGHT = 700
 FPS = 30
 title = "N-Puzzle"
-TILESIZE = 64
+TILESIZE = 128
 
 # O "N" do "N-Puzzle"
 GAMESIZE = 4

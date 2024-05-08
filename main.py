@@ -41,6 +41,8 @@ class Game:
         self.tiles_grid = self.create_game()
         # Vai ter o resultado
         self.tiles_grid_completed = self.create_game()
+        
+        self.draw_tiles()
     
     def run(self):
         self.playing = True
@@ -64,7 +66,6 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.all_sprites.draw(self.screen)
         self.draw_grid()
-        self.draw_tiles()
         pygame.display.flip()
     
     def events(self):
@@ -72,6 +73,25 @@ class Game:
             if (event.type == pygame.QUIT):
                 pygame.quit()
                 quit(0)
+                
+            if (event.type == pygame.MOUSEBUTTONDOWN):
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                for row, tiles in enumerate(self.tiles):
+                    for col, tile in enumerate(tiles):
+                        if (tile.click(mouse_x, mouse_y)):
+                            if (tile.right() and self.tiles_grid[row][col+1] == 0):
+                                self.tiles_grid[row][col], self.tiles_grid[row][col+1] = self.tiles_grid[row][col+1], self.tiles_grid[row][col]
+                            
+                            if (tile.left() and self.tiles_grid[row][col-1] == 0):
+                                self.tiles_grid[row][col], self.tiles_grid[row][col-1] = self.tiles_grid[row][col-1], self.tiles_grid[row][col]
+                                
+                            if (tile.up() and self.tiles_grid[row-1][col] == 0):
+                                self.tiles_grid[row][col], self.tiles_grid[row-1][col] = self.tiles_grid[row-1][col], self.tiles_grid[row][col]
+                                
+                            if (tile.down() and self.tiles_grid[row+1][col] == 0):
+                                self.tiles_grid[row][col], self.tiles_grid[row+1][col] = self.tiles_grid[row+1][col], self.tiles_grid[row][col]
+                                
+                            self.draw_tiles()
     
 
 game = Game()
