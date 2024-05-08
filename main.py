@@ -3,6 +3,7 @@ import random
 import time
 from settings import *
 from sprite import *
+from solver_BFS import bfs_solver
 
 class Game:
     def __init__(self):
@@ -16,6 +17,16 @@ class Game:
         self.start_game = False
         self.start_timer = False
         self.elapsed_time = 0
+        self.shuffled = False
+        
+        self.solver_types = {
+                            1 : "Humano",
+                            2 : "BFS",
+                            3 : "DFSi",
+                            4 : "A* WrngPcs",
+                            5 : "A* Manhattan"
+                            }
+        self.solver_used = self.solver_types[1]
         
         self.moves_made = 0
         
@@ -39,6 +50,7 @@ class Game:
                 number += 1
         
         grid[-1][-1] = 0
+        print(grid)
         return grid
     
     def shuffle(self):
@@ -104,12 +116,18 @@ class Game:
         self.start_timer = False
         self.start_game = False
         self.moves_made = 0
+        self.shuffled = False
+        self.solver_used = self.solver_types[1]
         
         self.draw_tiles()
         
         self.buttons_list = []
-        self.buttons_list.append(Button(WIDTH-(WIDTH*0.25), 50, 220, 60, "Embaralhar", WHITE, BLACK))
-        self.buttons_list.append(Button(WIDTH-(WIDTH*0.25), 130, 220, 60, "Resetar", WHITE, BLACK))
+        self.buttons_list.append(Button(UIBUTTONS_X, 50, 220, 60, "Embaralhar", WHITE, BLACK))
+        self.buttons_list.append(Button(UIBUTTONS_X, 130, 220, 60, "Resetar", WHITE, BLACK))
+        self.buttons_list.append(Button(UIBUTTONS_X, 320, 240, 60, "BFS Solver", WHITE, PURPLE))
+        self.buttons_list.append(Button(UIBUTTONS_X, 400, 240, 60, "DFSi Solver", WHITE, PURPLE))
+        self.buttons_list.append(Button(UIBUTTONS_X, 480, 240, 60, "A* WrongPcs", WHITE, PURPLE))
+        self.buttons_list.append(Button(UIBUTTONS_X, 560, 240, 60, "A* Manhattan", WHITE, PURPLE))
     
     def run(self):
         self.playing = True
@@ -124,6 +142,9 @@ class Game:
             if (self.tiles_grid == self.tiles_grid_completed):
                 self.start_game = False
                 print("Ganhou")
+                arquivo = open("Soluções.txt", 'a')
+                arquivo.writelines(f"{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos")
+                arquivo.close()
                 
             if (self.start_timer):
                 self.timer = time.time()
@@ -155,8 +176,8 @@ class Game:
         for button in self.buttons_list:
             button.draw(self.screen)
             
-        UIElement(WIDTH-(WIDTH*0.25)+40, 250, str("%0.3f" % self.elapsed_time)).draw(self.screen)
-        UIElement(WIDTH-(WIDTH*0.25)+40, 350, str(self.moves_made)).draw(self.screen)
+        UIElement(UITEXT_X, 215, str("%0.3f" % self.elapsed_time)).draw(self.screen)
+        UIElement(UITEXT_X, 270, str(self.moves_made)).draw(self.screen)
         pygame.display.flip()
     
     def events(self):
@@ -190,11 +211,15 @@ class Game:
                             
                 for button in self.buttons_list:
                     if (button.click(mouse_x, mouse_y)):
-                        if (button.text == "Embaralhar"):
+                        if (button.text == "Embaralhar" and self.shuffled == False):
                             self.shuffle_time = 0
                             self.start_shuffle = True
+                            self.shuffled = True
                         if (button.text == "Resetar"):
                             self.new()
+                        if (button.text == "BFS"):
+                            self.solver_used = self.solver_types[2]
+                            bfs_solver(self.tiles_grid, self.tiles_grid_completed)
     
 
 game = Game()
