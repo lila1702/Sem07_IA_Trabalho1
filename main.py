@@ -160,7 +160,9 @@ class Game:
             self.shuffle()
             self.draw_tiles()
             self.shuffle_time += 1
-            if (self.shuffle_time > SHUFFLE_TIME):
+            total_shuffle_time = random.randint(SHUFFLE_TIME[0], SHUFFLE_TIME[1])
+            if (self.shuffle_time > total_shuffle_time):
+                #print(total_shuffle_time)
                 self.start_shuffle = False
                 self.start_game = True
                 self.start_timer = True
@@ -169,6 +171,7 @@ class Game:
                 if (self.solver_used == self.solver_types[2]):
                     solver = BFS_Solver()
                     solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
+                    print(solver.moves_made)
                 if (self.solver_used == self.solver_types[3]):
                     pass
                 if (self.solver_used == self.solver_types[4]):
