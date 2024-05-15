@@ -1,0 +1,7 @@
+Humano: 37.242226123809814 com 49 passos
+Humano: 85.10764002799988 com 133 passos
+Humano: 66.2343761920929 com 89 passos
+Humano: 35.04800200462341 com 65 passos
+Humano: 28.40024733543396 com 49 passos
+Humano: 57.40291953086853 com 76 passos
+Humano: 48.35811376571655 com 100 passos
