@@ -170,12 +170,15 @@ class Game:
                 
                 if (self.solver_used == self.solver_types[2]):
                     solver = BFS_Solver()
-                    solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
-                    print(solver.moves_made)
+                    resposta = solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
+                    print(resposta)
+                    
                 if (self.solver_used == self.solver_types[3]):
                     pass
+                
                 if (self.solver_used == self.solver_types[4]):
                     pass
+                
                 if (self.solver_used == self.solver_types[5]):
                     pass
                 
