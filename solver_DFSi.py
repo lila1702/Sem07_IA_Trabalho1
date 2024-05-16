@@ -76,9 +76,9 @@ if (__name__ == "__main__"):
     ]
     
     teste = [
-        [1, 2, 3],
+        [1, 2, 5],
         [4, 6, 0],
-        [7, 5, 8]
+        [7, 3, 8]
     ]
     
     solution = solver.solve(teste, objetivo)
