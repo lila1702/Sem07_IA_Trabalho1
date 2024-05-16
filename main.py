@@ -4,8 +4,9 @@ import time
 from settings import *
 from sprite import *
 from solver_BFS import BFS_Solver
-#from solver_AWrongPcs import AWrongPcs_Solver
 from solver_DFSi import IDDFS_Solver
+#from solver_AWrongPcs import AWrongPcs_Solver
+from solver_AManhathan import A_Manhattan_Solver
 
 class Game:
     def __init__(self):
@@ -186,21 +187,23 @@ class Game:
                 self.start_timer = True
                 self.aux_gamestate = self.tiles_grid
                 
+                # BFS
                 if (self.solver_used == self.solver_types[2]):
                     solver = BFS_Solver()
                     self.solution_steps = solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
-                    
+                # DFS iterativo
                 if (self.solver_used == self.solver_types[3]):
                     solver = IDDFS_Solver()
                     self.solution_steps = solver.solve(self.aux_gamestate, self.tiles_grid_completed)
-                
+                # A* com heurística de peças erradas
                 if (self.solver_used == self.solver_types[4]):
                     #solver = AWrongPcs_Solver()
                     #self.solution_steps = solver.solve_puzzle_a_star(self.aux_gamestate)
                     pass
-                
+                # A* com heurística de manhattan
                 if (self.solver_used == self.solver_types[5]):
-                    pass
+                    solver = A_Manhattan_Solver()
+                    self.solution_steps = solver.a_star_manhattan_solver(self.aux_gamestate, self.tiles_grid_completed)
                 
         self.all_sprites.update()
     

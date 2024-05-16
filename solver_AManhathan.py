@@ -12,10 +12,10 @@ class A_Manhattan_Solver():
         # Pode mover para baixo
         if (empty_pos[0] < GAMESIZE-1):
             possible_moves.append([empty_pos[0] + 1, empty_pos[1]])
-        # Pode mover para esquerda
+        # Pode mover para direita
         if (empty_pos[1] < GAMESIZE-1):
             possible_moves.append([empty_pos[0], empty_pos[1] + 1])
-        # Pode mover para direita
+        # Pode mover para esquerda
         if (empty_pos[1] > 0):
             possible_moves.append([empty_pos[0], empty_pos[1] - 1])
         
@@ -48,22 +48,25 @@ class A_Manhattan_Solver():
         
         while (current_state != None):
             path.append(turn_tuple_to_grid(current_state))
-            current_state = parents_dict.get(current_state)
+            current_state = parents_dict.get(turn_grid_to_tuple(current_state))
         
         # Retorna os caminhos do estado inicial até o estado final
         return path[::-1]
 
+    def find_goal_pos(self, grid, wanted_num):
+        for row, tiles in enumerate(grid):
+            for col, tile in enumerate(tiles):
+                if (tile == wanted_num):
+                    return row, col
+
     def calculate_manhattan_distance(self, grid, objective):
         manhattan_cost = 0
-        number_rows = len(grid)
-        number_columns = len(grid[0])
-        for row in range(number_rows):
-            for col in range(number_columns):
+        
+        for row in range(GAMESIZE):
+            for col in range(GAMESIZE):
                 tile = grid[row][col]
                 if (tile != 0):
-                    # Usa divisão para transformar a lista com o estado meta pelo nº de colunas
-                    # para obter a posição 2D do tile
-                    goal_row, goal_col = divmod(objective.index(tile), number_columns)
+                    goal_row, goal_col = self.find_goal_pos(objective, tile)
                     # Manhattan Cost: |x1 - x2| + |y1 - y2|
                     manhattan_cost += abs(row - goal_row) + abs(col - goal_col)
         return manhattan_cost
@@ -73,30 +76,43 @@ class A_Manhattan_Solver():
         visited_game_states = set()
         parent_game_states = {}
         # Custo de ir de um estado inicial até outro estado
-        g_score = {grid : 0}
+        g_score = {turn_grid_to_tuple(grid) : 0}
         
         while (game_states_queue):
             # Organiza a fila de prioridade de acordo com o g_score e o f_score, que é a soma das manhattan distances
-            game_states_queue.sort(key=lambda x: g_score[x] + self.calculate_manhattan_distance(x, objective))
+            game_states_queue.sort(key=lambda x: g_score[turn_grid_to_tuple(x)] + self.calculate_manhattan_distance(x, objective))
             
             current_game_state = game_states_queue.pop(0)
             current_game_state_tuple = turn_grid_to_tuple(current_game_state)
             
             visited_game_states.add(current_game_state_tuple)
             
-            if (len(parent_game_states == 0)):
-                parent_game_states[current_game_state] = None
+            if (len(parent_game_states) == 0):
+                parent_game_states[current_game_state_tuple] = None
             
             if (current_game_state == objective):
                 return self.reconstruct_path(objective, parent_game_states)
             
-            # CONTINUAR AQUI
-            
+            for next_state in self.generate_states(current_game_state, self.find_zero_pos(current_game_state)):
+                next_state_tuple = turn_grid_to_tuple(next_state)
+                
+                if (next_state_tuple in visited_game_states):
+                    continue
+                
+                new_g_score = g_score[current_game_state_tuple] + 1
+                
+                if (next_state_tuple not in game_states_queue):
+                    game_states_queue.append(next_state)
+                elif (new_g_score >= g_score[next_state]):
+                    continue
+                
+                parent_game_states[next_state_tuple] = current_game_state
+                g_score[next_state_tuple] = new_g_score
 
 if (__name__ == "__main__"):
     solver = A_Manhattan_Solver()
     
-    grid = [
+    objective = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 0]
@@ -108,4 +124,24 @@ if (__name__ == "__main__"):
         [7, 5, 8]
     ]
     
-    print(solver.a_star_manhattan_solver(grid_test, grid))
+    grid_test2 = [
+        [3, 7, 5],
+        [1, 0, 8],
+        [6, 4, 2]
+    ]
+    
+    objective2 = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 0]
+    ]
+    
+    grid_test3 = [
+        [5, 1, 2, 3],
+        [6, 10, 7, 4],
+        [9, 11, 0, 8],
+        [13, 14, 15, 12]
+    ]
+    
+    print(solver.a_star_manhattan_solver(grid_test3, objective2))

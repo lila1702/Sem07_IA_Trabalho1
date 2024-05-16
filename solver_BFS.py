@@ -12,10 +12,10 @@ class BFS_Solver():
         # Pode mover para baixo
         if (empty_pos[0] < GAMESIZE-1):
             possible_moves.append([empty_pos[0] + 1, empty_pos[1]])
-        # Pode mover para esquerda
+        # Pode mover para direita
         if (empty_pos[1] < GAMESIZE-1):
             possible_moves.append([empty_pos[0], empty_pos[1] + 1])
-        # Pode mover para direita
+        # Pode mover para esquerda
         if (empty_pos[1] > 0):
             possible_moves.append([empty_pos[0], empty_pos[1] - 1])
         
