@@ -54,12 +54,8 @@ class AWrongPcs_solver():
             current_state = parents_dict.get(current_state)
         
         # retorna os caminho do estado inicial até o final
-        #return path[::-1]
-        path.reverse()
-        for state_tuple in path:
-            state = turn_tuple_to_grid(state_tuple)
-            print("Estado:", state)
-    
+        return path[::-1]
+        
     def count_wrong_pieces(self, state, objective_state):
     # contar o numero de peças fora do lugar
         wrong_pieces = 0
@@ -75,48 +71,40 @@ class AWrongPcs_solver():
 
     
     def solve_A_WrongPcs(self, initial_state, objective_state):
+        #cria umconjunto para armazenar os estados que vão ser explorados
         open_set = {turn_grid_to_tuple(initial_state): self.count_wrong_pieces(initial_state)+0}
         closet_set = set()
+        #mapear cada estado explorado
         parents_dict = {}
 
+        #loop principal
         while open_set:
             for item in open_set.items():
                 if not current_state or priority > item[1]:
                     current_state, priority = item
-            current_state = turn_grid_to_tuple(current_state)
 
+            current_state = turn_grid_to_tuple(current_state)
+            
+            #Se o estado atual for igual ao estado ideal confirma
             if current_state== objective_state:
                 return self.resconstruct_path(current_state, parents_dict)
-            
+                
+            #remove o estado atual, pois já foi explorado e adiciona a closet_set
             open_set.pop(turn_grid_to_tuple(current_state))
             closet_set.add(turn_grid_to_tuple(current_state))
 
+            # gera sucessores a partir da posição atual e a do zero e vai por todos os estados proximos possiveis
             for next_state in self.generate_states(current_state, self.find_zero_pos(current_state)):
                 next_state_tuple = turn_grid_to_tuple(next_state)
+                #calcula o custo e a prioridade total do proximo estado
                 g_score = open_set.get(next_state_tuple.float("inf"))+1
                 f_score = self.count_wrong_pieces(next_state) + g_score
 
                 if next_state_tuple not in closet_set or f_score<g_score:
+                    # reconstruir o caminho da solução posteriormente, rastreando os pais de cada estado até o estado inicial
                     parents_dict[next_state_tuple] = current_state
                     open_set[next_state_tuple] = f_score
 
 
-# Exemplo de uso
-initial_state = [
-    [2, 8, 3],
-    [1, 6, 4],
-    [7, 5, 0]
-]
-objective_state = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 0]
-]
-solver = AWrongPcs_solver()
-solution = solver.solve_A_WrongPcs(initial_state, objective_state)
 
-if solution:
-    print("Caminho de solução encontrado:")
-    solver.reconstruct_path(solution[0], solution[1])
-else:
-    print("Não foi possível encontrar uma solução.")
+
