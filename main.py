@@ -4,6 +4,9 @@ import time
 from settings import *
 from sprite import *
 from solver_BFS import BFS_Solver
+from solver_DFSi import IDDFS_Solver
+#from solver_AWrongPcs import AWrongPcs_Solver
+from solver_AManhathan import A_Manhattan_Solver
 
 class Game:
     def __init__(self):
@@ -29,6 +32,8 @@ class Game:
                             5 : "A* Manhattan"
                             }
         self.solver_used = self.solver_types[1]
+        self.solution_steps = []
+        self.solution_index = 0
         
         self.moves_made = 0
         
@@ -121,6 +126,9 @@ class Game:
         self.shuffled = False
         self.solver_used = self.solver_types[1]
         
+        self.solution_steps = []
+        self.solution_index = 0
+        
         self.draw_tiles()
         
         self.buttons_list = []
@@ -156,6 +164,17 @@ class Game:
                 self.start_timer = False
             self.elapsed_time = time.time() - self.timer
         
+        if (self.solution_steps):
+            solution_size = len(self.solution_steps)
+            if (self.solution_index < solution_size):
+                self.tiles_grid = self.solution_steps[self.solution_index]
+                self.draw_tiles()
+                self.solution_index += 1
+                self.moves_made += 1
+                time.sleep(0.1)
+            else:
+                self.solution_steps = []
+        
         if (self.start_shuffle):
             self.shuffle()
             self.draw_tiles()
@@ -168,19 +187,23 @@ class Game:
                 self.start_timer = True
                 self.aux_gamestate = self.tiles_grid
                 
+                # BFS
                 if (self.solver_used == self.solver_types[2]):
                     solver = BFS_Solver()
-                    resposta = solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
-                    print(resposta)
-                    
+                    self.solution_steps = solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
+                # DFS iterativo
                 if (self.solver_used == self.solver_types[3]):
-                    pass
-                
+                    solver = IDDFS_Solver()
+                    self.solution_steps = solver.solve(self.aux_gamestate, self.tiles_grid_completed)
+                # A* com heurística de peças erradas
                 if (self.solver_used == self.solver_types[4]):
+                    #solver = AWrongPcs_Solver()
+                    #self.solution_steps = solver.solve_puzzle_a_star(self.aux_gamestate)
                     pass
-                
+                # A* com heurística de manhattan
                 if (self.solver_used == self.solver_types[5]):
-                    pass
+                    solver = A_Manhattan_Solver()
+                    self.solution_steps = solver.a_star_manhattan_solver(self.aux_gamestate, self.tiles_grid_completed)
                 
         self.all_sprites.update()
     

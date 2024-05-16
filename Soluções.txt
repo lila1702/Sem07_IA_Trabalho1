@@ -5,3 +5,19 @@ Humano: 35.04800200462341 com 65 passos
 Humano: 28.40024733543396 com 49 passos
 Humano: 57.40291953086853 com 76 passos
 Humano: 48.35811376571655 com 100 passos
+Humano: 23.84884762763977 com 31 passos
+BFS: 2.9072840213775635 com 24 passos
+BFS: 3.3252716064453125 com 25 passos
+BFS: 3.035308361053467 com 25 passos
+BFS: 2.906512498855591 com 24 passos
+BFS: 3.136373281478882 com 24 passos
+BFS: 0.6709561347961426 com 20 passos
+A* Manhattan: 2.206422805786133 com 19 passos
+A* Manhattan: 1.378894329071045 com 12 passos
+A* Manhattan: 2.3430368900299072 com 20 passos
+A* Manhattan: 2.838702440261841 com 24 passos
+A* Manhattan: 2.86029314994812 com 24 passos
+A* Manhattan: 2.024927854537964 com 17 passos
+A* Manhattan: 3.257970094680786 com 27 passos
+A* Manhattan: 3.2457616329193115 com 26 passos
+BFS: 2.6416263580322266 com 22 passos

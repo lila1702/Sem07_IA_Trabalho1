@@ -1,5 +1,6 @@
 import copy
 from auxiliary_functions import turn_grid_to_tuple, turn_tuple_to_grid
+from settings import *
 
 class BFS_Solver():
     def generate_moves(self, empty_pos):
@@ -9,10 +10,10 @@ class BFS_Solver():
         if (empty_pos[0] > 0):
             possible_moves.append([empty_pos[0] - 1, empty_pos[1]])
         # Pode mover para baixo
-        if (empty_pos[0] < 2):
+        if (empty_pos[0] < GAMESIZE-1):
             possible_moves.append([empty_pos[0] + 1, empty_pos[1]])
         # Pode mover para direita
-        if (empty_pos[1] < 2):
+        if (empty_pos[1] < GAMESIZE-1):
             possible_moves.append([empty_pos[0], empty_pos[1] + 1])
         # Pode mover para esquerda
         if (empty_pos[1] > 0):
@@ -53,13 +54,13 @@ class BFS_Solver():
         return path[::-1]
     
     def bfs_solver(self, grid, objective):
-        # Inicialita a fila de game_states, o set para os game_states visitados e o dicionário de parentesco dos game_states
+        # Inicializa a fila de game_states, o set para os game_states visitados e o dicionário de parentesco dos game_states
         game_states_queue = [grid]
         visited_game_states = set()
         parent_game_state = {}
         
         # Enquanto houver game_state na fila
-        while (game_states_queue != []):
+        while (game_states_queue):
             current_game_state = game_states_queue.pop(0)
             empty_tile_pos = self.find_zero_pos(current_game_state)
             current_state_tuple = turn_grid_to_tuple(current_game_state)
@@ -103,6 +104,20 @@ if __name__ == "__main__":
         [4, 6, 0],
         [7, 5, 8]
     ]
+    
+    # grid = [
+    #     [1, 2, 3, 4],
+    #     [5, 6, 7, 8],
+    #     [9, 10, 11, 12],
+    #     [13, 14, 15, 0]
+    # ]
+    
+    # grid_test = [
+    #     [1, 2, 3, 4],
+    #     [5, 6, 7, 8],
+    #     [13, 9, 10, 11],
+    #     [14, 15, 0, 12]
+    # ]
     
     resposta = solver.bfs_solver(grid_test, grid)
     
