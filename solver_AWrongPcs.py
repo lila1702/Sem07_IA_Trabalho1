@@ -1,5 +1,4 @@
-class A_WrongPieces_Solver():
-    import copy
+import copy
 from auxiliary_functions import turn_grid_to_tuple, turn_tuple_to_grid
 from settings import *
 
