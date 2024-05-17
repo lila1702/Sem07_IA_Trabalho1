@@ -97,10 +97,12 @@ class AWrongPcs_solver():
                 f_score = self.count_wrong_pieces(next_state, objective_state) + g_score
 
             if next_state_tuple not in closet_set or f_score < g_score:
-                print("rinoceronte")
-                continue
-            parents_dict[next_state_tuple] = current_state
-            open_set[next_state_tuple] = f_score
+                parents_dict[next_state_tuple] = current_state
+                open_set[next_state_tuple] = f_score
+            print("hipotamo")
+            else:
+                print("Nenhuma solução encontrada para o estado inicial dado.")
+                return None
             print("hipotamo")
         
 
