@@ -12,11 +12,12 @@ O código foi feito utilizando Orientação a Objetos com Python e Pygame
 - Contagem de quantos movimentos foram realizados até chegar na solução
 - Registro em _Soluções.txt_ qual foi o Solver utilizado (Humano, BFS, DPSi, A* heurística peças erradas, A* heurística manhattan) e suas respectivas contagens de tempo e movimentos
 - Algoritmo BFS
+- DFSi
 - Algoritmo A* com heurística de peças erradas (H1)
 - Algoritmo A* com heurística de Manhattan (H2)
 
 **Falta Implementar:**
-- DPSi
+- A versão terminal do jogo
 
 Também é necessário fazer um relatório com as instâncias testadas, e contendo:
 - Quantidade de passos de sua solução;
