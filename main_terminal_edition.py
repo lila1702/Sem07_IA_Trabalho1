@@ -1,166 +1,127 @@
-import random
-import time
+from copy import deepcopy
+from random import choice, randint
 from settings import *
+from auxiliary_functions import *
 from solver_BFS import BFS_Solver
-from solver_DFSi import IDDFS_Solver
-# from solver_AWrongPcs import AWrongPcs_Solver
+from solver_DFSi import DFSi_Solver
+from solver_AWrongPcs import A_WrongPcs_Solver
 from solver_AManhathan import A_Manhattan_Solver
 
-class Game:
+class Game():
     def __init__(self):
-        self.shuffle_time = 0
-        self.start_shuffle = False
-        self.previous_choice = ""
-        self.start_game = False
-        self.start_timer = False
-        self.shuffled = False
-        
-        self.aux_gamestate = []
-        
-        self.solver_types = {
-                            1 : "Humano",
-                            2 : "BFS",
-                            3 : "DFSi",
-                            4 : "A* WrngPcs",
-                            5 : "A* Manhattan"
-                            }
-        self.solver_used = self.solver_types[1]
-        self.solution_steps = []
-        self.solution_index = 0
-        
-        self.moves_made = 0
-        
-    def create_game(self):
-        grid = []
-        number = 1
-        for x in range(GAMESIZE):
-            grid.append([])
-            for y in range (GAMESIZE):
-                grid[x].append(number)
-                number += 1
-        
-        grid[-1][-1] = 0
-        return grid
+        self.board = []
+        self.goal_board = []
     
-    def new(self):
-        # O que vai ser mudado
-        self.tiles_grid = self.create_game()
-        # Vai ter o resultado
-        self.tiles_grid_completed = self.create_game()
+    def generate_board(self):
+        num = 1
+        for i in range(GAMESIZE):
+            self.board.append([])
+            for j in range(GAMESIZE):
+                self.board[i].append(num)
+                num += 1
         
-        self.start_timer = False
-        self.start_game = False
-        self.moves_made = 0
-        self.shuffled = False
-        self.solver_used = self.solver_types[1]
+        self.board[-1][-1] = 0
         
-        self.solution_steps = []
-        self.solution_index = 0
-    
-    def generate_moves(self, empty_pos):
-        possible_moves = []
-        
-        # Pode mover para cima
-        if (empty_pos[0] > 0):
-            possible_moves.append([empty_pos[0] - 1, empty_pos[1]])
-        # Pode mover para baixo
-        if (empty_pos[0] < GAMESIZE-1):
-            possible_moves.append([empty_pos[0] + 1, empty_pos[1]])
-        # Pode mover para direita
-        if (empty_pos[1] < GAMESIZE-1):
-            possible_moves.append([empty_pos[0], empty_pos[1] + 1])
-        # Pode mover para esquerda
-        if (empty_pos[1] > 0):
-            possible_moves.append([empty_pos[0], empty_pos[1] - 1])
-        
-        return possible_moves
-    
-    def find_zero_pos(self, grid):
+        self.goal_board = deepcopy(self.board)
+        return self.board
+
+    def find_empty_pos(self, grid):
         for row, tiles in enumerate(grid):
             for col, tile in enumerate(tiles):
                 if (tile == 0):
                     return [row, col]
-    
-    def move_tile(self, zero_pos, new_pos):
-        zero_pos[0], zero_pos[1], new_pos[0], new_pos[1] = new_pos[0], new_pos[1], zero_pos[0], zero_pos[1]
-    
-    def right(self, col):
-        if (col < GAMESIZE-1):
-            return True
-    def left(self, col):
-        if (col > 0):
-            return True
-    def up(self, row):
-        if (row > 0):
-            return True
-    def down(self, row):
-        if (row < GAMESIZE-1):
-            return True
-    
-    def shuffle_grid(self):
-        zero_pos = self.find_zero_pos(self.tiles_grid)
-        possible_moves = []
+                
+    def find_possible_moves(self, grid, empty_pos):
+        moves = []
+        x, y = empty_pos
         
-        if (self.right(zero_pos[1])):
-            possible_moves.append("Right")
-        if (self.left(zero_pos[1])):
-            possible_moves.append("Left")
-        if (self.up(zero_pos[0])):
-            possible_moves.append("Up")
-        if (self.down(zero_pos[0])):
-            possible_moves.append("Down")
-        
-        if (self.previous_choice == "Right"):
-            possible_moves.remove("Left") if "Left" in possible_moves else possible_moves
-        if (self.previous_choice == "Left"):
-            possible_moves.remove("Right") if "Right" in possible_moves else possible_moves
-        if (self.previous_choice == "Up"):
-            possible_moves.remove("Down") if "Down" in possible_moves else possible_moves
-        if (self.previous_choice == "Down"):
-            possible_moves.remove("Up") if "Up" in possible_moves else possible_moves
-        
-        choice = random.choice(possible_moves)
-        if (choice == "Right"):
-            self.previous_choice = "Right"
-            new_pos = [zero_pos[0+1], zero_pos[1]]
-        if (choice == "Left"):
-            self.previous_choice = "Left"
-            new_pos = [zero_pos[0-1], zero_pos[1]]
-        if (choice == "Up"):
-            self.previous_choice = "Up"
-            new_pos = [zero_pos[0], zero_pos[1+1]]
-        if (choice == "Down"):
-            self.previous_choice = "Down"
-            new_pos = [zero_pos[0+1], zero_pos[1-1]]
-            
-        self.move_tile(zero_pos, new_pos)
-        
-    def print_grid(self, grid):
-        for row in grid:
-            print(row)
-    
-    def play(self):
-        self.shuffle_grid()
-    
-    def run(self):
-        self.print_grid(self.tiles_grid)
-        print("\nDigite 'q' para sair, '1' para jogar, '2' para usar o BFS, '3' para usar o DFS, '4' para usar o A* com heurística de peças erradas e '5' para usar o A* com heurística de manhattan")
+        # Pode mover para cima
+        if (x > 0):
+            moves.append((x - 1, y))
+        # Pode mover para baixo
+        if (x < GAMESIZE - 1):
+            moves.append((x + 1, y))
+        # Pode mover para esquerda
+        if (y > 0):
+            moves.append((x, y - 1))
+        # Pode mover para direita
+        if (y < GAMESIZE - 1):
+            moves.append((x, y + 1))
+        return moves
 
-# O JOGO:
+    def move_tiles(self, grid, pos, empty_pos):
+        new_grid = deepcopy(grid)
+        x1, y1 = pos
+        x2, y2 = empty_pos
+        new_grid[x2][y2], new_grid[x1][y1] = new_grid[x1][y1], new_grid[x2][y2]
+        return new_grid
+
+    def print_board(self):
+        print()
+        
+        for row in self.board:
+            print(row)
+
+    def shuffle_board(self, board):
+        last_move = ()
+        empty_pos = self.find_empty_pos(board)
+        
+        for _ in range(randint(120, 240)):
+            possible_moves = self.find_possible_moves(board, empty_pos)
+            possible_moves = [move for move in possible_moves if move != last_move[::-1]]
+            this_choice = choice(possible_moves)
+            board = self.move_tiles(board, this_choice, empty_pos)
+            empty_pos = this_choice
+            last_move = (empty_pos, this_choice)
+        self.board = board
+        self.print_board()
+
+    def menu(self):
+        shuffled = False
+        solution = None
+        self.generate_board()
+        self.print_board()
+        while (True):
+            print("\nEscolha o que deseja fazer: ")
+            print("1) Embaralhar tabuleiro\n2) Resetar tabuleiro\n3) BFS_Solver\n4) DFSi_Solver\n5) A_Star_WrongPieces_Solver\n6) A_Star_Manhattan_Solver\n0) Sair")
+            escolha = int(input("Digite o número correspondente: ").strip())
+            if (escolha == 0):
+                break
+            elif (shuffled == False and escolha == 1):
+                self.start_game()
+                shuffled = True
+            elif (shuffled == True and escolha == 2 or solution != None):
+                self.board = []
+                self.goal_board = []
+                self.generate_board()
+                self.print_board()
+                shuffled = False
+                solution = None
+            elif (shuffled == True and escolha == 3 and solution == None):
+                solver = BFS_Solver()
+                solution = solver.bfs_solver(self.board, self.goal_board)
+                shuffled = False
+            elif (shuffled == True and escolha == 4 and solution == None):
+                solver = DFSi_Solver()
+                solution = solver.dfsi_solver(self.board, self.goal_board)
+                shuffled = False
+            elif (shuffled == True and escolha == 5 and solution == None):
+                solver = A_WrongPcs_Solver()
+                solution = solver.a_star_wrongpcs_solver(self.board, self.goal_board)
+                shuffled = False
+            elif (shuffled == True and escolha == 6 and solution == None):
+                solver = A_Manhattan_Solver()
+                solution = solver.a_star_manhattan_solver(self.board, self.goal_board)
+                shuffled = False
+            else:
+                print("Escolha inválida")
+                
+            if (solution != None):
+                print_states(solution)
+
+    def start_game(self):
+        self.shuffle_board(self.board)
+
+# MAIN
 game = Game()
-while (True):
-    game.new()
-    game.run()
-    player_input = input().strip().lower()
-    if (player_input == 'q'):
-        break
-    if (player_input == '1'):
-        game.play()
-    if (player_input == '2'):
-        pass
-    if (player_input == '3'):
-        pass
-    if (player_input == '4'):
-        pass
-    if (player_input == '5'):
-        pass
+game.menu()
