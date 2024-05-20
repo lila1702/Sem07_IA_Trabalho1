@@ -1,10 +1,12 @@
 import copy
-from auxiliary_functions import turn_grid_to_tuple, turn_tuple_to_grid
+from auxiliary_functions import *
 from settings import *
 
 class BFS_Solver():
     def generate_moves(self, empty_pos):
         possible_moves = []
+        
+        GAMESIZE = len(self.grid)
         
         # Pode mover para cima
         if (empty_pos[0] > 0):
@@ -54,6 +56,7 @@ class BFS_Solver():
         return path[::-1]
     
     def bfs_solver(self, grid, objective):
+        self.grid = grid
         # Inicializa a fila de game_states, o set para os game_states visitados e o dicionário de parentesco dos game_states
         game_states_queue = [grid]
         visited_game_states = set()
@@ -105,26 +108,36 @@ if __name__ == "__main__":
         [7, 5, 8]
     ]
     
-    # grid = [
-    #     [1, 2, 3, 4],
-    #     [5, 6, 7, 8],
-    #     [9, 10, 11, 12],
-    #     [13, 14, 15, 0]
-    # ]
+    grid2 = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 0]
+    ]
     
-    # grid_test = [
-    #     [1, 2, 3, 4],
-    #     [5, 6, 7, 8],
-    #     [13, 9, 10, 11],
-    #     [14, 15, 0, 12]
-    # ]
+    grid_test2 = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [13, 9, 10, 11],
+        [14, 15, 0, 12]
+    ]
     
-    resposta = solver.bfs_solver(grid_test, grid)
+    grid3 = [
+        [1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10],
+        [11, 12, 13, 14, 15],
+        [16, 17, 18, 19, 20],
+        [21, 22, 23, 24, 0]
+    ]
     
-    if resposta:
-        for state in resposta:
-            for row in state:
-                print(row)
-            print()
-    else:
-        print("Não foi encontrada nenhuma solução.")
+    grid_test3 = [
+        [1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10],
+        [11, 12, 13, 20, 0],
+        [16, 17, 18, 15, 24],
+        [21, 22, 23, 14, 19]
+    ]
+    
+    resposta = solver.bfs_solver(grid_test3, grid3)
+    
+    print_states(resposta)

@@ -6,6 +6,8 @@ class A_Manhattan_Solver():
     def generate_moves(self, empty_pos):
         possible_moves = []
         
+        GAMESIZE = len(self.grid)
+        
         # Pode mover para cima
         if (empty_pos[0] > 0):
             possible_moves.append([empty_pos[0] - 1, empty_pos[1]])
@@ -62,9 +64,8 @@ class A_Manhattan_Solver():
     def calculate_manhattan_distance(self, grid, objective):
         manhattan_cost = 0
         
-        for row in range(GAMESIZE):
-            for col in range(GAMESIZE):
-                tile = grid[row][col]
+        for row, tiles in enumerate(grid):
+            for col, tile in enumerate(tiles):
                 if (tile != 0):
                     goal_row, goal_col = self.find_goal_pos(objective, tile)
                     # Manhattan Cost: |x1 - x2| + |y1 - y2|
@@ -72,6 +73,7 @@ class A_Manhattan_Solver():
         return manhattan_cost
 
     def a_star_manhattan_solver(self, grid, objective):
+        self.grid = grid
         game_states_queue = [grid]
         visited_game_states = set()
         parent_game_states = {}
@@ -110,6 +112,8 @@ class A_Manhattan_Solver():
                 g_score[next_state_tuple] = new_g_score
 
 if (__name__ == "__main__"):
+    debug_mode = True
+    
     solver = A_Manhattan_Solver()
     
     objective = [
@@ -144,4 +148,6 @@ if (__name__ == "__main__"):
         [13, 14, 15, 12]
     ]
     
-    print(solver.a_star_manhattan_solver(grid_test3, objective2))
+    resposta = solver.a_star_manhattan_solver(grid_test3, objective2)
+    
+    print_states(resposta)

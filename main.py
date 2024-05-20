@@ -4,8 +4,8 @@ import time
 from settings import *
 from sprite import *
 from solver_BFS import BFS_Solver
-from solver_DFSi import IDDFS_Solver
-#from solver_AWrongPcs import AWrongPcs_Solver
+from solver_DFSi import DFSi_Solver
+from solver_AWrongPcs import A_WrongPcs_Solver
 from solver_AManhathan import A_Manhattan_Solver
 
 class Game:
@@ -154,9 +154,9 @@ class Game:
                 print("Ganhou")
                 arquivo = open("Soluções.txt", 'a')
                 if (arquivo.read == ""):
-                    arquivo.writelines(f"{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos")
+                    arquivo.writelines(f"{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos para um {GAMESIZE}-puzzle")
                 else:
-                    arquivo.writelines(f"\n{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos")
+                    arquivo.writelines(f"\n{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos para um {GAMESIZE}-puzzle")
                 arquivo.close()
                 
             if (self.start_timer):
@@ -193,13 +193,12 @@ class Game:
                     self.solution_steps = solver.bfs_solver(self.aux_gamestate, self.tiles_grid_completed)
                 # DFS iterativo
                 if (self.solver_used == self.solver_types[3]):
-                    solver = IDDFS_Solver()
+                    solver = DFSi_Solver()
                     self.solution_steps = solver.solve(self.aux_gamestate, self.tiles_grid_completed)
                 # A* com heurística de peças erradas
                 if (self.solver_used == self.solver_types[4]):
-                    #solver = AWrongPcs_Solver()
-                    #self.solution_steps = solver.solve_puzzle_a_star(self.aux_gamestate)
-                    pass
+                    solver = A_WrongPcs_Solver()
+                    self.solution_steps = solver.a_star_wrongpcs_solver(self.aux_gamestate, self.tiles_grid_completed)
                 # A* com heurística de manhattan
                 if (self.solver_used == self.solver_types[5]):
                     solver = A_Manhattan_Solver()
@@ -271,7 +270,7 @@ class Game:
                         if (button.text == "DFSi Solver"):
                             self.begin_shuffle()
                             self.solver_used = self.solver_types[3]
-                        if (button.text == "A* WrngPcs"):
+                        if (button.text == "A* WrongPcs"):
                             self.begin_shuffle()
                             self.solver_used = self.solver_types[4]
                         if (button.text == "A* Manhattan"):
