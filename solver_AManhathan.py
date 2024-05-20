@@ -112,8 +112,6 @@ class A_Manhattan_Solver():
                 g_score[next_state_tuple] = new_g_score
 
 if (__name__ == "__main__"):
-    debug_mode = True
-    
     solver = A_Manhattan_Solver()
     
     objective = [
@@ -148,6 +146,6 @@ if (__name__ == "__main__"):
         [13, 14, 15, 12]
     ]
     
-    resposta = solver.a_star_manhattan_solver(grid_test3, objective2)
+    resposta = solver.a_star_manhattan_solver(grid_test, objective)
     
     print_states(resposta)

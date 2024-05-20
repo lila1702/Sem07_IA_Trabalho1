@@ -55,12 +55,6 @@ class A_WrongPcs_Solver():
         # Retorna os caminhos do estado inicial até o estado final
         return path[::-1]
 
-    def find_goal_pos(self, grid, wanted_num):
-        for row, tiles in enumerate(grid):
-            for col, tile in enumerate(tiles):
-                if (tile == wanted_num):
-                    return row, col
-
     def count_misplaced_tiles(self, grid, objective):
         misplaced_tiles = 0
         

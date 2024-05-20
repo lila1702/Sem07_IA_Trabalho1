@@ -1,6 +1,15 @@
-
 Humano: 46.651875257492065 com 78 passos para um 3-puzzle
 BFS: 1.8385334014892578 com 16 passos para um 3-puzzle
 A* Manhattan: 2.674034595489502 com 23 passos para um 3-puzzle
 A* WrngPcs: 2.3233132362365723 com 20 passos para um 3-puzzle
 BFS: 3.3655285835266113 com 28 passos para um 3-puzzle
+A* Manhattan: 2.6625964641571045 com 22 passos para um 3-puzzle
+A* WrngPcs: 2.7390968799591064 com 21 passos para um 3-puzzle
+BFS: 2.3830034732818604 com 20 passos para um 3-puzzle
+BFS: 1.8730030059814453 com 16 passos para um 3-puzzle
+A* Manhattan: 2.9933292865753174 com 25 passos para um 3-puzzle
+A* WrngPcs: 2.794869899749756 com 23 passos para um 3-puzzle
+DFSi: 2.5011026859283447 com 19 passos para um 3-puzzle
+DFSi: 2.4277970790863037 com 20 passos para um 3-puzzle
+DFSi: 3.2036283016204834 com 26 passos para um 3-puzzle
+BFS: 2.8378427028656006 com 23 passos para um 3-puzzle
