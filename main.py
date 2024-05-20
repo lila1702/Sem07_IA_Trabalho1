@@ -153,10 +153,7 @@ class Game:
                 self.start_game = False
                 print("Ganhou")
                 arquivo = open("Soluções.txt", 'a')
-                if (arquivo.read == ""):
-                    arquivo.writelines(f"{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos para um {GAMESIZE}-puzzle")
-                else:
-                    arquivo.writelines(f"\n{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos para um {GAMESIZE}-puzzle")
+                arquivo.writelines(f"\n{self.solver_used}: {self.elapsed_time} com {self.moves_made} passos para um {GAMESIZE}-puzzle")
                 arquivo.close()
                 
             if (self.start_timer):
@@ -194,7 +191,7 @@ class Game:
                 # DFS iterativo
                 if (self.solver_used == self.solver_types[3]):
                     solver = DFSi_Solver()
-                    self.solution_steps = solver.solve(self.aux_gamestate, self.tiles_grid_completed)
+                    self.solution_steps = solver.dfsi_solver(self.aux_gamestate, self.tiles_grid_completed)
                 # A* com heurística de peças erradas
                 if (self.solver_used == self.solver_types[4]):
                     solver = A_WrongPcs_Solver()
