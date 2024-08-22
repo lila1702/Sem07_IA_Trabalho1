@@ -13,3 +13,4 @@ DFSi: 2.5011026859283447 com 19 passos para um 3-puzzle
 DFSi: 2.4277970790863037 com 20 passos para um 3-puzzle
 DFSi: 3.2036283016204834 com 26 passos para um 3-puzzle
 BFS: 2.8378427028656006 com 23 passos para um 3-puzzle
+A* Manhattan: 2.5631415843963623 com 22 passos para um 3-puzzle

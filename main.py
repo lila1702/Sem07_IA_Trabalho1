@@ -1,12 +1,12 @@
 import pygame
 import random
 import time
-from settings import *
-from sprite import *
-from solver_BFS import BFS_Solver
-from solver_DFSi import DFSi_Solver
-from solver_AWrongPcs import A_WrongPcs_Solver
-from solver_AManhathan import A_Manhattan_Solver
+from settings.settings import *
+from settings.sprite import *
+from solvers.solver_BFS import BFS_Solver
+from solvers.solver_DFSi import DFSi_Solver
+from solvers.solver_AWrongPcs import A_WrongPcs_Solver
+from solvers.solver_AManhathan import A_Manhattan_Solver
 
 class Game:
     def __init__(self):

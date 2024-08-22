@@ -1,6 +1,6 @@
-from auxiliary_functions import *
-from settings import *
 import copy
+from solvers.auxiliary_functions import *
+from ..settings import *
 
 class A_Manhattan_Solver():
     def generate_moves(self, empty_pos):
@@ -146,6 +146,22 @@ if (__name__ == "__main__"):
         [13, 14, 15, 12]
     ]
     
-    resposta = solver.a_star_manhattan_solver(grid_test, objective)
+    objective3 = [
+        [1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10],
+        [11, 12, 13, 14, 15],
+        [16, 17, 18, 19, 20],
+        [21, 22, 23, 24, 0]
+    ]
+    
+    grid_test4 = [
+        [2, 3, 10, 0, 4],
+        [1, 6, 13, 8, 5],
+        [11, 7, 12, 9, 14],
+        [16, 22, 18, 19, 15],
+        [17, 21, 23, 24, 20]
+    ]
+    
+    resposta = solver.a_star_manhattan_solver(grid_test4, objective3)
     
     print_states(resposta)

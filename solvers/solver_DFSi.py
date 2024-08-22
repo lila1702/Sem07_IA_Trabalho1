@@ -1,5 +1,5 @@
-from auxiliary_functions import *
-from settings import *
+from solvers.auxiliary_functions import *
+from ..settings import *
 import copy
 
 class DFSi_Solver:

@@ -1,6 +1,6 @@
 import copy
-from auxiliary_functions import *
-from settings import *
+from solvers.auxiliary_functions import *
+from ..settings import *
 
 class BFS_Solver():
     def generate_moves(self, empty_pos):
@@ -108,36 +108,12 @@ if __name__ == "__main__":
         [7, 5, 8]
     ]
     
-    grid2 = [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [9, 10, 11, 12],
-        [13, 14, 15, 0]
-    ]
-    
     grid_test2 = [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8],
-        [13, 9, 10, 11],
-        [14, 15, 0, 12]
+        [3, 7, 5],
+        [1, 0, 8],
+        [6, 4, 2]
     ]
     
-    grid3 = [
-        [1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-        [11, 12, 13, 14, 15],
-        [16, 17, 18, 19, 20],
-        [21, 22, 23, 24, 0]
-    ]
-    
-    grid_test3 = [
-        [1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-        [11, 12, 13, 20, 0],
-        [16, 17, 18, 15, 24],
-        [21, 22, 23, 14, 19]
-    ]
-    
-    resposta = solver.bfs_solver(grid_test3, grid3)
+    resposta = solver.bfs_solver(grid_test2, grid)
     
     print_states(resposta)

@@ -1,5 +1,5 @@
-from auxiliary_functions import *
-from settings import *
+from solvers.auxiliary_functions import *
+from ..settings import *
 import copy
 
 class A_WrongPcs_Solver():
@@ -124,6 +124,6 @@ if (__name__ == "__main__"):
         [6, 4, 2]
     ]
     
-    result = solver.a_star_wrongpcs_solver(grid_test2, objective)
+    result = solver.a_star_wrongpcs_solver(grid_test, objective)
     
     print_states(result)
